@@ -2,8 +2,9 @@ import telebot
 from telebot import types
 from random import choice
 from PIL import Image
-from token import *
+#from token import *
 
+token = '6056207304:AAE_p4qJMQYAv1mMrXwuZe95naZcbwmd4z8'
 bot = telebot.TeleBot(token)
 drinks = ['Водка','Виски','Джин','Коньяк','Текила','Пиво','Ничего']
 
