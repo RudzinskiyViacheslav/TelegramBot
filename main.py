@@ -3,10 +3,13 @@ from telebot import types
 from random import choice
 from PIL import Image
 #from token import *
+from parser import *
 
 token = '6056207304:AAE_p4qJMQYAv1mMrXwuZe95naZcbwmd4z8'
 bot = telebot.TeleBot(token)
-drinks = ['Водка','Виски','Джин','Коньяк','Текила','Пиво','Ничего']
+drinks = ['Водка', 'Виски', 'Джин', 'Коньяк', 'Текила', 'Пиво', 'Ничего']
+url_github_egor = 'https://github.com/eeroshkin/bot'
+url_winelab_vodka = 'https://www.winelab.ru/catalog/krepkiy-alkogol-vodka/cp_0.5?sort=price-asc'
 
 def what_to_drink():
     drink = choice(drinks)
@@ -35,13 +38,14 @@ def start_message(message):
 
     item1 = types.KeyboardButton('Создатель бота')
     item2 = types.KeyboardButton('Что выпить')
-    item3 = types.KeyboardButton('Лесенка')
+    item3 = types.KeyboardButton('Выведи файлы из реп-я Егора')
     item4 = types.KeyboardButton('Отметь-ка всех')
     item5 = types.KeyboardButton('Отправь фото')
+    item6 = types.KeyboardButton('Покажи цены на водку')
 
-    markup_for_group.add(item1, item2, item3, item4)
+    markup_for_group.add(item1, item2, item3, item4, item6)
 
-    markup_for_chat.add(item1, item2, item3, item5)
+    markup_for_chat.add(item1, item2, item3, item5, item6)
 
     if message.chat.type == 'private':
         bot.send_message(message.chat.id, f'Приветик {message.from_user.username}', reply_markup=markup_for_chat)
@@ -55,15 +59,14 @@ def start_message(message):
     # bot.send_message(message.from_user.id, "Славик фигачит бота. Напиши что-нибудь нормальное")
 
 
-@bot.message_handler(content_types='text')
+@bot.message_handler(content_types=['text'])
 def message_reply(message):
     if message.text == "Создатель бота":
         bot.send_message(message.chat.id, "@i_am_monarch")
     elif message.text == "Что выпить":
         bot.send_message(message.chat.id, what_to_drink())
-    elif message.text == "Лесенка":
-        bot.send_message(message.chat.id, "1-я ступеня - лох, 2-я - Коля"
-                                          " ... 7-я - Авдей")
+    elif message.text == "Выведи файлы из реп-я Егора":
+        bot.send_message(message.chat.id, get_github_data(url_github_egor))
     elif message.text == "Отметь-ка всех":
         bot.send_message(message.chat.id, "@meinatemkalt @i_am_monarch @Sashilo17 @lob_gleb"
                                           " @79161879944 @Dmitriy_Sergeevich_L "
@@ -86,10 +89,6 @@ def handle_photo(message):
     changed_photo = photo_to_change.convert("L")
 
     bot.send_photo(message.chat.id, changed_photo)
-
-bot.polling()
-
-
 
 
 bot.infinity_polling()

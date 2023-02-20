@@ -1,5 +1,5 @@
 from telegram.ext import Updater, MessageHandler
-from telegram.ext import Filters
+from telegram.ext import filters
 
 
 def image_handler(update, context):
@@ -13,7 +13,7 @@ def image_handler(update, context):
 def main():
     updater = Updater('6056207304:AAE_p4qJMQYAv1mMrXwuZe95naZcbwmd4z8', True)
     dp = updater.dispatcher
-    dp.add_handler(MessageHandler(Filters.photo, image_handler))
+    dp.add_handler(MessageHandler(filters.photo, image_handler))
     updater.start_polling()
     updater.idle()
 
